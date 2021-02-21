@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>test</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    <style type="text/css">
+	#all{
+		width:100%;
+		height:500px;
+	}
+	#orign{
+		width: 45%;
+		height:400px;
+		display:inline;
+		float:left;
+		top:30px;
+		left:10px;
+	}
+	#resp{
+		width: 55%;
+		height:400px;
+		display:inline;
+		float:left;
+		top:30px;
+	}
+	</style>
+	
+	<!-- 引入 echarts.js -->
+    <script src="../js/echarts.min.js"></script>
+     
+<script language="javascript">  
+    var result;
+    var nameIP22;
+    var XMLHttpReq;  
+        //创建XMLHttpRequest对象         
+        function createXMLHttpRequest() {  
+            if(window.XMLHttpRequest) { //Mozilla 浏览器  
+                XMLHttpReq = new XMLHttpRequest();  
+            }  
+            else if (window.ActiveXObject) { // IE浏览器  
+                try {  
+                    XMLHttpReq = new ActiveXObject("Msxml2.XMLHTTP");  
+                } catch (e) {  
+                    try {  
+                        XMLHttpReq = new ActiveXObject("Microsoft.XMLHTTP");  
+                    } catch (e) {}  
+                }  
+            }  
+        }  
+        //发送请求函数  
+        function sendRequest() {  
+            createXMLHttpRequest();  
+            var url = "Origin_ajax.jsp";  
+            XMLHttpReq.open("GET", url, true);  
+            XMLHttpReq.onreadystatechange = processResponse;//指定响应函数  
+            XMLHttpReq.send(null);  // 发送请求  
+        }  
+        // 处理返回信息函数  
+        function processResponse() {  
+            if (XMLHttpReq.readyState == 4) { // 判断对象状态  
+                if (XMLHttpReq.status == 200) { // 信息已经成功返回，开始处理信息  
+                    DisplayHot();  
+                    setTimeout("sendRequest()", 5000);  
+                } else { //页面不正常  
+                    window.alert("您所请求的页面有异常。");  
+                }  
+            }  
+        }  
+        function DisplayHot() {  
+            var name = XMLHttpReq.responseXML.getElementsByTagName("origin");  
+          	
+            var name2=name[0].childNodes[0].nodeValue.replace("]","");
+          	name2=name2.replace("[","");
+          	var name22=name2.split(",");
+            
+            var origin=Number(name22[1])-Number(name22[0]);
+            result=(origin)/5120;
+           
+         
+            // 基于准备好的dom，初始化echarts实例
+            
+  }
+    windows.onload=function(){
+       var nameIP = XMLHttpReq.responseXML.getElementsByTagName("originIP");  
+            var nameIP2=nameIP[0].childNodes[0].nodeValue.replace("]","");
+          		nameIP2=nameIP2.replace("[","");
+          	nameIP22=nameIP2.split(",");
+   },
+</script>  
+  </head>
+  
+  <body onload =sendRequest()>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="all">
+    <div id="orign"></div>
+    <div id="resp"></div>
+    </div>
+    <script type="text/javascript">
+    	
+		var myChart1 = echarts.init(document.getElementById('orign'));
+		var option1 = {
+				    title: {
+				        text: '源IP实时图(每小时)',
+				        x:'40%'
+				    },
+				    tooltip: {
+				        trigger: 'axis',
+				        axisPointer: {
+				            type: 'shadow'
+				        }
+				    },
+				    grid: {
+				        left: '3%',
+				        right: '4%',
+				        bottom: '3%',
+				        containLabel: true
+				    },
+				     xAxis: {
+				        type: 'category',
+				    	data: (function (){  
+		                var now = new Date(); 
+		                var h=now.getHours();
+		                var res = [];  
+		                var len = 5;  
+		                while (len--) {  
+		                    res.unshift(h+':00'); 
+		                    h = h - 1; 
+		                }  
+		                return res;  
+		            })() ,
+				    	},
+				    yAxis: {
+				        type: 'value',
+				        boundaryGap: [0, 0.01]
+				    },
+				  
+				    series: [
+				        {
+				            type: 'bar',
+				            data: nameIP22,
+				        },
+				    ]
+				};
+	        myChart1.setOption(option1);
+	</script>	 
+<!--     <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById(''));
+        // 指定图表的配置项和数据
+         var option = {
+        title: {
+                text: '源IP流量分布',
+                left: 'center'
+            },
+    tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)"
+    },
+    legend: {
+    	top:30,
+        orient: 'vertical',
+        x: 'left',
+        data:['10.185.146.167','10.185.178.97','10.185.159.133','10.185.163.223',
+        '10.185.174.94','10.185.144.221','10.185.147.113','10.185.136.154','10.185.143.110',
+        '10.185.138.152','else']
+    },
+    series: [
+        {
+            name:'源IP流量',
+            type:'pie',
+            radius: ['60%', '80%'],
+            avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: '30',
+                        fontWeight: 'bold'
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: true
+                }
+            },
+            data:[
+                {value:183, name:'10.185.146.167'},
+                {value:168, name:'10.185.178.97'},
+                {value:110, name:'10.185.159.133'},
+                {value:98, name:'10.185.163.223'},
+                {value:87, name:'10.185.174.94'},
+                {value:69, name:'10.185.144.221'},
+                {value:53, name:'10.185.147.113'},
+                {value:41, name:'10.185.136.154'},
+                {value:26, name:'10.185.143.110'},
+                {value:23, name:'10.185.138.152'},
+                {value:139, name:'else'}
+            ]
+        }
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option); 
+    </script>
+     -->
+    <script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('resp'));
+		var	option = {
+			    title: {
+			        text: '源IP实时流量图'
+			    },
+			    tooltip: {
+			        trigger: 'axis'
+			    },
+			    toolbox: {
+			        show : true,
+			        feature : {
+			            mark : {show: true},
+			            dataView : {show: true, readOnly: false},
+			            magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+			            restore : {show: true},
+			            saveAsImage : {show: true}
+			        }
+			    },
+			    calculable : true,
+
+			    legend: {
+			        data:['流量大小(单位:kbps)']
+			    },
+			    grid: {
+			        left: '3%',
+			        right: '4%',
+			        bottom: '3%',
+			        containLabel: true
+			    },
+			    xAxis: {
+			        type: 'category',
+			        boundaryGap: false,
+			        data: (function (){  
+		                var now = new Date();  
+		                var res = [];  
+		                var len = 10;  
+		                while (len--) {  
+		                    res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));  
+		                    now = new Date(now - 5000);  
+		                }  
+		                return res;  
+		            })()  
+			    },
+			    yAxis: {
+			       type: 'value'
+			      
+			    },
+			    series: [
+			        {
+			            name:'流量大小(单位:kbps)',
+			            type:'line',
+			            data:(function (){  
+			                var res = [];  
+			                var len = 0;  
+			                while (len < 10) {  
+			                    res.push((Math.random()*10+100).toFixed(1) - 0);  
+			                    len++;  
+			                }  
+			                return res;  
+			            })(),  
+			            },
+			     
+			    ]
+			 };  
+			 
+			 
+			setInterval(function (){  
+			    axisData = (new Date()).toLocaleTimeString().replace(/^\D*/,'');  
+			    
+			    var data2=option.series[0].data;
+			    data2.shift();
+			    data2.push(result);
+			 
+			    option.xAxis.data.shift();  
+			    option.xAxis.data.push(axisData);  
+			      
+			    
+			    myChart.setOption(option);  
+			},5000);
+					myChart.setOption(option);
+            
+      
+    </script>
+  </body>
+</html>

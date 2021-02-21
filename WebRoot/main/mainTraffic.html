@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>test</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    <style type="text/css">
+    	#main{
+    		width: 100%;
+    		height:400px;
+    	}
+    	#center{
+    		width: 100%;
+    		height:500px;
+    	}
+    	#orign{
+		width: 45%;
+		height:400px;
+		display:inline;
+		float:left;
+		top:30px;
+		left:10px;
+		}
+		#resp{
+		width: 55%;
+		height:400px;
+		display:inline;
+		float:left;
+		top:30px;
+		}
+    	
+    </style>
+    
+	<!-- 引入 echarts.js -->
+    <script src="../js/echarts.min.js"></script>
+    
+  </head>
+  
+  <body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    
+    <div id="main"></div>
+    <div id="center">
+    <div id="orign"></div>
+    <div id="resp"></div>
+    </div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+    tooltip : {
+        trigger: 'axis',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+    legend: {
+        data:['日志文件(单位：MB)','流量大小(单位：GB)','连接数量(单位：千条)']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis : [
+        {
+            type : 'category',
+            data : ['2017/03/20','2017/03/21','2017/03/22','2017/03/23','2017/03/24','2017/03/25']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'日志文件(单位：MB)',
+            type:'bar',
+            data:[630, 680, 710, 638, 650, 720]
+        },
+        {
+        	name:'连接数量(单位：千条)',
+        	type:'bar',
+            data:[210, 233, 256, 190, 211, 253]
+        },
+        {
+            name:'流量大小(单位：GB)',
+            type:'bar',
+            stack: '流量',
+            data:[35, 37, 42, 38, 34, 45]
+        },
+       
+       
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('orign'));
+
+        // 指定图表的配置项和数据
+        var option = {
+        title: {
+                text: '源IP流量分布',
+                left: 'center'
+            },
+    tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)"
+    },
+    legend: {
+    	top:30,
+        orient: 'vertical',
+        x: 'left',
+        data:['10.185.146.167','10.185.178.97','10.185.159.133','10.185.163.223',
+        '10.185.174.94','10.185.144.221','10.185.147.113','10.185.136.154','10.185.143.110',
+        '10.185.138.152','else']
+    },
+    series: [
+        {
+            name:'源IP流量',
+            type:'pie',
+            radius: ['60%', '80%'],
+            avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: '30',
+                        fontWeight: 'bold'
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: true
+                }
+            },
+            data:[
+                {value:183, name:'10.185.146.167'},
+                {value:168, name:'10.185.178.97'},
+                {value:110, name:'10.185.159.133'},
+                {value:98, name:'10.185.163.223'},
+                {value:87, name:'10.185.174.94'},
+                {value:69, name:'10.185.144.221'},
+                {value:53, name:'10.185.147.113'},
+                {value:41, name:'10.185.136.154'},
+                {value:26, name:'10.185.143.110'},
+                {value:23, name:'10.185.138.152'},
+                {value:139, name:'else'}
+            ]
+        }
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+        <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('resp'));
+
+        // 指定图表的配置项和数据
+        var option = {
+        title: {
+                text: '目标IP流量分布',
+                left: 'center'
+            },
+    tooltip: {
+        trigger: 'item',
+        formatter: "{a} <br/>{b}: {c} ({d}%)"
+    },
+    legend: {
+    	top:30,
+    	left:30,
+        orient: 'vertical',
+        x: 'left',
+        data:['115.156.188.163','122.205.110.132','121.207.225.60','115.156.188.188','113.200.235.184','123.163.216.93','101.4.152.192','221.235.254.11','183.131.79.240','else']
+    },
+    series: [
+        
+        {
+            name:'目标IP流量',
+            type:'pie',
+            radius: ['10%', '80%'],
+
+            data:[
+                {value:44, name:'115.156.188.163'},
+                {value:43, name:'122.205.110.132'},
+                {value:26, name:'121.207.225.60'},
+                {value:23, name:'115.156.188.188'},
+                {value:19, name:'113.200.235.184'},
+                {value:17, name:'123.163.216.93'},
+                {value:16, name:'101.4.152.192'},
+                {value:15, name:'221.235.254.11'},
+                {value:14, name:'183.131.79.240'},
+                {value:770, name:'else'}
+            ]
+        }
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+  </body>
+</html>
